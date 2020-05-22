@@ -5,8 +5,8 @@ Created on Tue Jun  5 17:25:36 2018
 @author: Jonathan Mushkin (Weizmann Institute of Science)
 """
 import sys
-import laika.simulator as sim
-import laika.constants as con
+import hopon.simulator as sim
+import hopon.constants as con
 import numpy as np
 
 M= [con.Msolar]*3
