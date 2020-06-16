@@ -94,8 +94,8 @@ class orbits_param_record(object):
         r_i = R[i0,:]-R[i1,:]
         v_i = V[i0,:]-V[i1,:]
         
-        ecc_vec_o,f_o,a_o,inc_o,Omega_o,omega_o = kepler.keplerian_elements_from_rv(r_o,v_o,G*M_o,mu_o)
-        ecc_vec_i,f_i,a_i,inc_i,Omega_i,omega_i = kepler.keplerian_elements_from_rv(r_i,v_i,G*M_i,mu_i)
+        ecc_vec_o,f_o,a_o,inc_o,Omega_o,omega_o = kepler.keplerian_elements_from_rv(r_o,v_o,G*M_o)
+        ecc_vec_i,f_i,a_i,inc_i,Omega_i,omega_i = kepler.keplerian_elements_from_rv(r_i,v_i,G*M_i)
         
         self.outer = kepler.orbital_elements(r_o,v_o,M_o,mu_o,G)
         self.inner = kepler.orbital_elements(r_i,v_i,M_i,mu_i,G)
@@ -395,7 +395,7 @@ def record_decision(R,V,M,G,record_flag,triplets):
     vo = (V[j0,:]*M[j0]+V[j1,:]*M[j1])/(M[j0]+M[j1])-V[j2,:]
         
         # (r dot v) / |r cross v|
-    rdv_rcv = np.sum(ro*vo)/ np.linalg.norm(util.my_cross(ro,vo))
+    rdv_rcv = np.sum(ro*vo)/ np.linalg.norm(util.cross(ro,vo))
         # rdv_rcv > 0 implies the outer orbit is in to (0,pi) phase
         # |rdv_rcv| < eps implies the orbit is near periapsis / apoapsis
         # add condition |r_o| > a_o to make sure it records the 

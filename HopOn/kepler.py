@@ -121,10 +121,10 @@ def rv_from_keplerian_elements(ecc_mag,a,f,inc,Omega,om,GM):
                           np.cos(inc)])
     
     asc_node_hat =  np.array([np.cos(Omega),np.sin(Omega),0.0])
-    t_hat = util.my_cross(J_hat,asc_node_hat)
+    t_hat = util.cross(J_hat,asc_node_hat)
     ecc_hat = asc_node_hat * np.cos(om) + t_hat*np.sin(om)
     
-    q_hat = util.my_cross(J_hat, ecc_hat)
+    q_hat = util.cross(J_hat, ecc_hat)
     # no need to normalize it, as asc_node_hat and third_hat are both
     # orthogonal to J_hat
     
@@ -167,7 +167,7 @@ def  keplerian_elements_from_rv(r,v,GM):
         
     r_hat = r/r_mag
     
-    h = util.my_cross(r,v) # angular momentum per unit reduced mass
+    h = util.cross(r,v) # angular momentum per unit reduced mass
     J_hat = h/norm(h)
     inc = np.arccos(J_hat[2])
 
@@ -177,18 +177,18 @@ def  keplerian_elements_from_rv(r,v,GM):
     if (np.abs(inc)<eps) | (np.abs(inc-np.pi)<eps):
         asc_node_hat = x_hat
     else:
-        asc_node_hat = util.my_cross(z_hat, J_hat)
+        asc_node_hat = util.cross(z_hat, J_hat)
         asc_node_hat = asc_node_hat / norm(asc_node_hat)
         
     Omega = np.arctan2(h[0],-h[1])
     Omega = np.mod(Omega,2*np.pi)
 
     
-    ecc_vec = util.my_cross(v,h)/GM - r_hat
+    ecc_vec = util.cross(v,h)/GM - r_hat
     
     if norm(ecc_vec)>eps:
         ecc_hat = ecc_vec / norm(ecc_vec)
-        om = np.arctan2(norm(util.my_cross(asc_node_hat,ecc_hat)), np.sum(asc_node_hat*ecc_hat) )
+        om = np.arctan2(norm(util.cross(asc_node_hat,ecc_hat)), np.sum(asc_node_hat*ecc_hat) )
     else:
         ecc_hat = asc_node_hat
         om = 0.0
@@ -196,7 +196,7 @@ def  keplerian_elements_from_rv(r,v,GM):
     if ecc_hat[2]<0:
         om = np.pi*2 - om
     
-    q_hat = util.my_cross(J_hat,ecc_hat)
+    q_hat = util.cross(J_hat,ecc_hat)
     f = np.mod(np.arctan2(np.sum(r_hat*q_hat), np.sum(r_hat*ecc_hat)  ),np.pi*2)
      
     return ecc_vec, f, a, inc, Omega, om

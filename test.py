@@ -4,27 +4,30 @@ Created on Tue Jun  5 17:25:36 2018
 
 @author: Jonathan Mushkin (Weizmann Institute of Science)
 """
+#%% import
 import sys
 import hopon.simulator as sim
 import hopon.constants as con
 import numpy as np
+import matplotlib.pyplot as plt
+#%% initialize 
 
-M= [con.Msolar]*3
+M= np.array([con.Msolar]*3)
 G = con.G
 a_i= con.AU * 1.0
 e_i = 0.5
 f_i = 0.0
-inc_i = np.pi * 0.3
+inc_i = np.pi * 0.9
 Omega_i = 0.0
 w_i = 0.0
-r_p_o = a_i * 4
-e_o = 0.9
+r_p_o = a_i * 5
+e_o = 0.8
 h1 = 100
 h2 = 100
 hls = a_i # hierarchical lengths-scale, 
 dt00= 0.003
-eval_nkt_every = 1000
-Nsteps = np.int64(1e6)
+eval_nkt_every = 100
+Nsteps = np.int64(5e6)
 
 a_o = r_p_o / (1-e_o)
 
@@ -35,7 +38,19 @@ ic = sim.initialize_simulation_elliptic(M=M,G=G,
 
 
 print('initial conditions created successfully')
+
+#%% perform simulation
 sr = sim.perform_simulation(ic=ic, Nsteps=Nsteps,kep_sep_crit=h1,kep_hier_crit=h2,
                                    hier_lengthscale=hls ,eval_NKT_every=eval_nkt_every,
                                    dt00=dt00 )       
 print('simulation performed successfully')
+
+#%% 
+
+ei =np.array( [sr.orbit_record[i].inner.ecc_mag for i in range(len(sr.orbit_record))])
+t = np.array( [sr.orbit_record[i].t for i in range(len(sr.orbit_record))])
+
+plt.plot(t/con.yr,ei)
+plt.xlabel('t (years)')
+plt.ylabel('inner eccentricity')
+plt.ylim((0,1))

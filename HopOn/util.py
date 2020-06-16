@@ -12,7 +12,7 @@ import numpy  as np
 from numba import njit
 
 @njit('float64[:](float64[:],float64[:])')
-def my_cross(x,y):
+def cross(x,y):
     z = np.empty_like(x)
     z[0] = x[1]*y[2] - x[2]*y[1]
     z[1] = x[2]*y[0] - x[0]*y[2]
