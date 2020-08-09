@@ -45,7 +45,7 @@ sr = sim.perform_simulation(ic=ic, Nsteps=Nsteps,kep_sep_crit=h1,kep_hier_crit=h
                                    dt00=dt00 )       
 print('simulation performed successfully')
 
-#%% 
+#%% plot inner eccentricity evolution with time
 
 ei =np.array( [sr.orbit_record[i].inner.ecc_mag for i in range(len(sr.orbit_record))])
 t = np.array( [sr.orbit_record[i].t for i in range(len(sr.orbit_record))])
